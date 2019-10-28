@@ -61,17 +61,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <ListView
-        android:id="@+id/news_list_view"
+    <LinearLayout
+        android:id="@+id/news_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
 
+        android:orientation="vertical"
+        tools:context=".MainActivity"
         android:layout_marginTop="20dp"
+        android:layout_weight="1"
 
-        android:textSize="25dp"
-        android:textColor="@color/colorLightestGreen"
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

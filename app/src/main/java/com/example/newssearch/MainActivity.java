@@ -9,16 +9,27 @@
 package com.example.newssearch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,9 +45,12 @@ public class MainActivity extends AppCompatActivity {
     // Values to put in the url
 
     //TODO: Empty the keyword & date after testing
-    static String keyword="nintendo";
+    static String keyword="";
     static String date="2019-10-24";
     String api_key = "2fb38e92e5b2494cbb6bf9ce57bd1bc9";
+
+    public NewsFragment currFrag = null;
+    Activity itself = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +58,42 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+
+    //This function sets the current date
+    public void setCurrentDate(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -7 );
+
+        Date date = calendar.getTime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-dd");
+        this.date = formatter.format(date);
+        System.out.println("Current Date(-7 days): "+this.date);
+    }
+
+    //This function returns array of articles from JSONObject
+    public JSONArray returnArticleArray(JSONObject object){
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = object.getJSONArray("articles");
+        } catch (Exception e) {
+            System.out.println("Article array not returned");
+        } finally {
+            return jsonArray;
+        }
+    }
+
     public void onClickSearch(View view){
+        EditText editText = (EditText) findViewById(R.id.edit_text);
+        keyword = editText.getText().toString();
+
+        System.out.println("KEYWORD: "+keyword);
+        if(keyword.equals("Enter keyword") || keyword.trim().equals("")){
+            Toast.makeText(getApplicationContext(),"No Keyword Entered!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        setCurrentDate();
         new fetchNewsTask().execute();
     }
 
@@ -56,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
             String line;
 
             try{
-                URL url = new URL(url_01+keyword+url_02+date+url_03+api_key);
+                String web = url_01+keyword+url_02+date+url_03+api_key;
+                System.out.println(web);
+                URL url = new URL(web);
 
                 BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
                 while((line = in.readLine()) != null){
@@ -78,6 +129,30 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONObject json){
             try{
+                if(currFrag!=null){
+                    System.out.println(currFrag.toString());
+                    FragmentManager manager = currFrag.getFragmentManager();
+                    FragmentTransaction trans = manager.beginTransaction();
+                    trans.remove(currFrag);
+                    trans.commit();
+                }
+                //TODO: Create Bundle to store JSONArray
+
+                Bundle bundle = new Bundle();
+                JSONArray jsonArray = returnArticleArray(json);
+                bundle.putString("JSON_ARRAY",jsonArray.toString());
+
+                //TODO: Create Fragment & attach the bundle
+
+                currFrag = new NewsFragment();
+                currFrag.setContainerActivity(itself);
+                currFrag.setArguments(bundle);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(R.id.news_layout,currFrag);
+
+                transaction.addToBackStack(null);
+                transaction.commit();
 
             }catch(Exception e){
                 System.out.println("Not enough information to show on screen");
