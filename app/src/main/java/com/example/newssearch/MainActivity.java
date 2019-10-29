@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
     static String date="2019-10-24";
     String api_key = "2fb38e92e5b2494cbb6bf9ce57bd1bc9";
 
-    public NewsFragment currFrag = null;
+    public static NewsFragment currFrag = null;
+    public static int position;
     Activity itself = this;
     public static JSONArray jsonArray;
 
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     //This function gives details on the news when clicked
     public void onClickNews(View view){
         ListView listView = (ListView) view.getParent();
-        int position = listView.getPositionForView(view);
+        this.position = listView.getPositionForView(view);
 
         System.out.println("id: "+position);
         //TODO: set up fragment with the proper value
@@ -130,6 +131,31 @@ public class MainActivity extends AppCompatActivity {
             transaction.commit();
 
 
+
+        }catch(Exception e){
+            System.out.println("JSONObject not found in position "+position);
+        }
+    }
+
+    //This function opens a web browser when clicked
+    public void onClickRead(View view){
+
+        try{
+
+            //TODO: Create Bundle to store JSONObject(in position)
+            JSONObject json = jsonArray.getJSONObject(position);
+            String urlForBrowser = json.getString("url");
+
+            Bundle bundle = new Bundle();
+            bundle.putString("URL",urlForBrowser);
+
+            WebFragment webFragment = new WebFragment();
+            webFragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.web_layout,webFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
 
         }catch(Exception e){
             System.out.println("JSONObject not found in position "+position);

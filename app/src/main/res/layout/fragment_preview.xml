@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorDarkGray"
-    tools:context=".PreviewFragment"
+    tools:context=".MainActivity"
     >
 
     <LinearLayout
@@ -43,6 +43,8 @@
             android:id="@+id/frag_read"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+
+            android:onClick="onClickRead"
 
             android:background="@color/colorLightGray"
             android:layout_marginTop="20dp"

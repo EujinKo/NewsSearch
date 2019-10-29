@@ -86,7 +86,6 @@
         />
 
     <LinearLayout
-        android:layout_weight="1"
         android:id="@+id/news_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -101,10 +100,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <WebView
-        android:id="@+id/web_view"
+    <LinearLayout
+        android:id="@+id/web_layout"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:orientation="vertical" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
