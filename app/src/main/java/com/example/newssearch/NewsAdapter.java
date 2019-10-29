@@ -7,17 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<WebSource> {
     private Context context;
     private List<WebSource> webSources;
     int textViewResourceId;
-
 
     public NewsAdapter(Context context, int textViewResourceId, List<WebSource> webSources){
         super(context,textViewResourceId,webSources);

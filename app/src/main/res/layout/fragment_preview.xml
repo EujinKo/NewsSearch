@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:clickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorDarkGray"
+    tools:context=".PreviewFragment"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/frag_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+
+            android:textColor="@color/colorLightGreen"
+            android:textSize="40dp" />
+
+        <TextView
+            android:id="@+id/frag_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:background="@color/colorDarkGray"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+
+            android:textSize="20dp"
+            android:textColor="@color/colorLightestGreen"
+            />
+
+        <Button
+            android:id="@+id/frag_read"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+
+            android:background="@color/colorLightGray"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:gravity="center"
+
+            android:text="@string/read_on"
+            android:textSize="35dp"
+            android:textColor="@color/colorLightGreen"
+            />
+
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

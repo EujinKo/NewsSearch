@@ -14,10 +14,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     public NewsFragment currFrag = null;
     Activity itself = this;
+    public static JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //This function performs search when button clicked with proper detail
     public void onClickSearch(View view){
         EditText editText = (EditText) findViewById(R.id.edit_text);
         keyword = editText.getText().toString();
@@ -95,6 +100,40 @@ public class MainActivity extends AppCompatActivity {
 
         setCurrentDate();
         new fetchNewsTask().execute();
+    }
+
+    //This function gives details on the news when clicked
+    public void onClickNews(View view){
+        ListView listView = (ListView) view.getParent();
+        int position = listView.getPositionForView(view);
+
+        System.out.println("id: "+position);
+        //TODO: set up fragment with the proper value
+
+        try{
+
+            //TODO: Create Bundle to store JSONObject(in position)
+            JSONObject json = jsonArray.getJSONObject(position);
+            String json_string = json.toString();
+            Bundle bundle = new Bundle();
+            bundle.putString("DETAILS",json_string);
+
+            //TODO: Create fragment and store bundle in extra
+            PreviewFragment detail_frag = new PreviewFragment();
+            detail_frag.setContainerActivity(itself);
+            detail_frag.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.news_detail_layout,detail_frag);
+
+            transaction.addToBackStack(null);
+            transaction.commit();
+
+
+
+        }catch(Exception e){
+            System.out.println("JSONObject not found in position "+position);
+        }
     }
 
     // AsyncTask that performs fetching the news articles from the keyword enetered
@@ -139,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 //TODO: Create Bundle to store JSONArray
 
                 Bundle bundle = new Bundle();
-                JSONArray jsonArray = returnArticleArray(json);
+                jsonArray = returnArticleArray(json);
                 bundle.putString("JSON_ARRAY",jsonArray.toString());
 
                 //TODO: Create Fragment & attach the bundle

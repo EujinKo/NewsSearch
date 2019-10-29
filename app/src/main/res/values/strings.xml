@@ -3,6 +3,7 @@
     <string name="text_title">News Reader</string>
     <string name="text_edit">Enter keyword</string>
     <string name="text_search">SEARCH</string>
+    <string name="read_on">READ ON...</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

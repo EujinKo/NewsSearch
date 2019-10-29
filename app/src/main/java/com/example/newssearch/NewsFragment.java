@@ -69,6 +69,7 @@ public class NewsFragment extends Fragment {
         }catch(Exception e){
             System.out.println("Cannot get next object");
         }
+
         NewsAdapter newsAdapter = new NewsAdapter(containerActivty, R.layout.news_row, webSources);
         newsListView = v.findViewById(R.id.news_list_frag);
         newsListView.setAdapter(newsAdapter);

@@ -1,7 +1,9 @@
+/**
+ * WebSource class to store website and author in a same class
+ */
+
 package com.example.newssearch;
 
-
-//Class to store website & author
 public class WebSource {
     public String website="";
     public String author="";
